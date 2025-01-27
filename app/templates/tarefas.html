@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Lista de Tarefas</h1>
+            <nav class="nav">
+                <a href="{{ url_for('main.index') }}" class="nav-link">Início</a>
+            </nav>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <form action="{{ url_for('main.add_task') }}" method="POST" class="form">
+                <input type="text" name="título" placeholder="Título da tarefa" required class="input">
+                <textarea name="descrição" placeholder="Descrição da tarefa" class="textarea"></textarea>
+                <button type="submit" class="button">Adicionar Tarefa</button>
+            </form>
+            <ul class="task-list">
+                {% for task in tasks %}
+                <li class="task-item">
+                    <span class="{{ 'task-completed' if task.completed else 'task-pending' }}">
+                        {{ task.title }} - {{ 'Concluída' if task.completed else 'Pendente' }}
+                    </span>
+                    <div class="task-actions">
+                        <a href="{{ url_for('main.update_task', task_id=task.id) }}" class="button small">Alterar Status</a>
+                        <a href="{{ url_for('main.delete_task', task_id=task.id) }}" class="button small danger">Excluir</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Gerenciador de Tarefas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
